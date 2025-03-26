@@ -7,16 +7,16 @@ import { Actors } from '../../test';
 
 const timeouts = {
     cucumber: {
-        step: Duration.ofSeconds(30),                       // how long to wait for a Cucumber step to complete
+        step: Duration.ofSeconds(30), // how long to wait for a Cucumber step to complete
     },
     playwright: {
-        defaultNavigationTimeout: Duration.ofSeconds(10),   // how long to wait for a page to load
-        defaultTimeout:           Duration.ofSeconds(5),    // how long to wait for an element to show up
+        defaultNavigationTimeout: Duration.ofSeconds(10), // how long to wait for a page to load
+        defaultTimeout: Duration.ofSeconds(5), // how long to wait for an element to show up
     },
     serenity: {
-        cueTimeout:               Duration.ofSeconds(5),    // how long to wait for Serenity/JS to complete any post-test activities, like saving screenshots and reports
-    }
-}
+        cueTimeout: Duration.ofSeconds(5), // how long to wait for Serenity/JS to complete any post-test activities, like saving screenshots and reports
+    },
+};
 
 let browser: playwright.Browser;
 
@@ -32,23 +32,37 @@ BeforeAll(async () => {
 
     // Configure Serenity/JS
     configure({
-
         // Configure Serenity/JS actors to use Playwright browser
         actors: new Actors(browser, {
-            baseURL:                    'https://the-internet.herokuapp.com/',
-            defaultNavigationTimeout:   timeouts.playwright.defaultNavigationTimeout.inMilliseconds(),
-            defaultTimeout:             timeouts.playwright.defaultTimeout.inMilliseconds(),
+            baseURL: 'https://www.akulakufinance.co.id',
+            defaultNavigationTimeout:
+                timeouts.playwright.defaultNavigationTimeout.inMilliseconds(),
+            defaultTimeout: timeouts.playwright.defaultTimeout.inMilliseconds(),
         }),
 
         // Configure Serenity/JS reporting services
         crew: [
-            [ '@serenity-js/console-reporter', { theme: 'auto' } ],
-            [ '@serenity-js/web:Photographer', {
-                // strategy: 'TakePhotosOfInteractions',    // capture screenshots of all the interactions; slower but more comprehensive
-                strategy: 'TakePhotosOfFailures',           // capture screenshots of failed interactions; much faster
-            } ],
-            [ '@serenity-js/core:ArtifactArchiver', { outputDirectory: path.resolve(__dirname, '../../target/site/serenity') } ],
-            [ '@serenity-js/serenity-bdd', { specDirectory: path.resolve(__dirname, '../../features') } ],
+            ['@serenity-js/console-reporter', { theme: 'auto' }],
+            [
+                '@serenity-js/web:Photographer',
+                {
+                    strategy: 'TakePhotosOfInteractions', // capture screenshots of all the interactions; slower but more comprehensive
+                    // strategy: 'TakePhotosOfFailures', // capture screenshots of failed interactions; much faster
+                },
+            ],
+            [
+                '@serenity-js/core:ArtifactArchiver',
+                {
+                    outputDirectory: path.resolve(
+                        __dirname,
+                        '../../target/site/serenity',
+                    ),
+                },
+            ],
+            [
+                '@serenity-js/serenity-bdd',
+                { specDirectory: path.resolve(__dirname, '../../features') },
+            ],
         ],
 
         cueTimeout: timeouts.serenity.cueTimeout,
@@ -60,4 +74,4 @@ AfterAll(async () => {
     if (browser) {
         await browser.close();
     }
-})
+});

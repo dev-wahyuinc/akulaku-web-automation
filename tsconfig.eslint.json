@@ -1,9 +1,5 @@
 {
-  "extends": "./tsconfig",
-  "include": [
-    "features/**/*.ts"
-  ],
-  "exclude": [
-    "node_modules"
-  ]
+    "extends": "./tsconfig",
+    "include": ["features/**/*.ts"],
+    "exclude": ["node_modules"]
 }
